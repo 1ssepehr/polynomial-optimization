@@ -94,13 +94,15 @@ int main( int argc, char* argv[] ) {
 	    c1 = M_G/2 + 2*j;
 	    c2 = c1 + 1;
 
+	    sample[c1] = sample[p1];
+	    sample[c2] = sample[p2];
+	    
 	    // Mix to get new children
 	    for( k = 0; k <= N_DEGREE; k++ ) {
-		if( abs( sample[p1].theta[k] - sample[p2].theta[k] ) <= 12 )
-		    sample[c1].theta[k] = sample[c2].theta[k] = 0.5 * (sample[p1].theta[k] + sample[p1].theta[k]);
-		else {
-		    sample[c1].theta[k] = new_theta();
-		    sample[c2].theta[k] = new_theta();
+		if( rand() % 2 ){ // swap [half] the thetas in the child chromosomes 
+		    int temp = sample[c1].theta[k];
+			sample[c1].theta[k] = sample[c2].theta[k];
+			    sample[c2].theta[k] = temp;
 		}
 	    }
 	}
@@ -126,3 +128,27 @@ int main( int argc, char* argv[] ) {
 
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+	
+
