@@ -4,7 +4,7 @@
 #include <math.h>
 #include "complex.h"
 
-#define new_theta() ( rand() % 9 - 4 )
+#define new_theta() ( rand() % 64 )
 
 #define N_DEGREE ( 15 )  // Degree of the polynomial
 #define N_ROOT ( 1 )     // Number of roots. 
