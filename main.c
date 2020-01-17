@@ -4,16 +4,16 @@
 #include <math.h>
 #include "complex.h"
 
-#define new_theta() ( rand() % 9 - 4 )
+#define new_theta() ( rand() % 64 )
 
-#define N_DEGREE ( 15 )  // Degree of the polynomial
-#define N_ROOT ( 1 )     // Number of roots. 
+#define N_DEGREE ( 15 )   // Degree of the polynomial
+#define N_ROOT ( 1 )      // Number of roots. 
 
-#define M_G ( 700 )      // Sample size population
-#define N_REPEAT ( 25 )  // # of generations to go
+#define M_G ( 1000 )      // Sample size population
+#define N_REPEAT ( 200 )  // # of generations to go
 
-#define TOTAL_BITS ( 6 ) // Total number of bits used for each coefficient
-#define MUTATION ( 5 )   // % rate of mutating (toggling) bits of child chromosomes
+#define TOTAL_BITS ( 3 )  // Total number of bits used for each coefficient
+#define MUTATION ( 5 )    // % rate of mutating (toggling) bits of child chromosomes
 
 struct chromosome {
     unsigned char theta[N_DEGREE + 1]; // To cover theta_0 to theta_N, inclusive
@@ -21,16 +21,17 @@ struct chromosome {
 };
 
 /**
- * Calculates the polynomial in a given u
+ * Calculates the polynomial in a given z
  */
 double calculate( struct chromosome *A, double z ) {
     int k; 
     complex ans, term;
     ans.real = 0; ans.im = 0;
+    double shift_alpha = 0; //- (2*M_PI / 64) * 3.5; // To shift [0, 7] to [-3.5, 3.5]
     for( k = 0; k <= N_DEGREE; k++ ){
-	term.real = cos( A->theta[i] * (2 * M_PI / 64) + k * M_PI * z );
-	term.im   = sin( A->theta[i] * (2 * M_PI / 64) + k * M_PI * z );
-	ans = Add_Complex( ans, term );
+	    term.real = cos( A->theta[k] * (2*M_PI / 64) + k * M_PI * z + shift_alpha );
+	    term.im   = sin( A->theta[k] * (2*M_PI / 64) + k * M_PI * z + shift_alpha );
+	    ans = Add_Complex( ans, term );
     }
     return Norm_Complex( ans );
 }
@@ -89,22 +90,24 @@ int main( int argc, char* argv[] ) {
 	
 	for( j = 0; j < M_G / 4; j++ ) {
 	    // Select parent chromosomes from top half to mix
-	    p1 = rand() % (M_G/2 + 1);
-	    do p2 = rand() % (M_G/2 + 1); while (p1 == p2); // p1, p2 -> [0, N/2] also p1 != p2
-	    c1 = M_G/2 + 2*j;
+	    p1 = rand() % (M_G / 2);
+	    do p2 = rand() % (M_G / 2); while (p1 == p2); // p1, p2 -> [0, N/2) also p1 != p2
+	    c1 = M_G / 2 + 2*j;
 	    c2 = c1 + 1;
 
+	    sample[c1] = sample[p1];
+	    sample[c2] = sample[p2];
+	    
 	    // Mix to get new children
 	    for( k = 0; k <= N_DEGREE; k++ ) {
-		if( abs( sample[p1].theta[k] - sample[p2].theta[k] ) <= 12 )
-		    sample[c1].theta[k] = sample[c2].theta[k] = 0.5 * (sample[p1].theta[k] + sample[p1].theta[k]);
-		else {
-		    sample[c1].theta[k] = new_theta();
-		    sample[c2].theta[k] = new_theta();
+		if( rand() % 2 ){ // swap [half] the thetas in the child chromosomes 
+		    int temp = sample[c1].theta[k];
+		    sample[c1].theta[k] = sample[c2].theta[k];
+		    sample[c2].theta[k] = temp;
 		}
 	    }
 	}
-
+	    
 	// Mutate the children to maintain diversity
 	for( j = M_G / 2; j < M_G; j++ ) // In bottom half of chromosomes
 	    for( k = 0; k <= N_DEGREE; k++ ) // Traverse the coefficients

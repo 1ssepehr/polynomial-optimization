@@ -101,12 +101,12 @@ int main( int argc, char* argv[] ) {
 	    for( k = 0; k <= N_DEGREE; k++ ) {
 		if( rand() % 2 ){ // swap [half] the thetas in the child chromosomes 
 		    int temp = sample[c1].theta[k];
-			sample[c1].theta[k] = sample[c2].theta[k];
-			    sample[c2].theta[k] = temp;
+		    sample[c1].theta[k] = sample[c2].theta[k];
+		    sample[c2].theta[k] = temp;
 		}
 	    }
 	}
-
+	
 	// Mutate the children to maintain diversity
 	for( j = M_G / 2; j < M_G; j++ ) // In bottom half of chromosomes
 	    for( k = 0; k <= N_DEGREE; k++ ) // Traverse the coefficients
