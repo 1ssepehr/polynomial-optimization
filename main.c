@@ -10,8 +10,8 @@
 #define M_G      ( 700 )  /* Sample size population */
 #define N_REPEAT ( 25 )   /* # of generations to go */
 
-#define TOTAL_BITS ( 3 )   /* Total number of bits used for each coefficient */
-#define MUTATION ( 50 )     /* % rate of mutating (toggling) bits of child chromosomes */
+#define TOTAL_BITS ( 3 )  /* Total number of bits used for each coefficient */
+#define MUTATION ( 50 )   /* % rate of mutating (toggling) bits of child chromosomes */
 
 typedef struct {
     unsigned char theta[N_DEGREE + 1]; /* To cover theta_0 to theta_N, inclusive */
@@ -121,7 +121,6 @@ void evaluate( chromosome *A, double u[], int u_count ) {
     }
     A -> evaluation = min;
 }
-
 
 int comparator( const void *A, const void *B ) {
     double a, b;
