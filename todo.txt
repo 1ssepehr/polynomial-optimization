@@ -1,1 +1,0 @@
-* remove N_ROOTS with a dynamic memory for u[].
