@@ -1,0 +1,48 @@
+sepehr@sepehr-G56JK:~/Documents/Sohrab$ st --complete genetic_no_mutation_with_mating
+N	min		q1		median		q3		max		sum		mean		stddev	stderr		variance
+1000	-74.1525	-50.7332	-46.9186	-43.9005	-36.6999	-47864.2	-47.8642	5.56945	0.176121	31.0188
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+sepehr@sepehr-G56JK:~/Documents/Sohrab$ st --complete genetic_only_mutation_5
+N	min		q1		median		q3		max		sum		mean		stddev	stderr		variance
+1000	-78.6604	-49.5196	-45.9383	-42.7804	-36.0295	-46787.3	-46.7873	5.86497	0.185467	34.3979
+
+sepehr@sepehr-G56JK:~/Documents/Sohrab$ st --complete genetic_only_mutation_10
+N	min		q1		median		q3		max		sum		mean		stddev	stderr		variance
+1000	-70.901		-45.1315	-41.2708	-38.3005	-30.4253	-42188.4	-42.1884	5.69125	0.179973	32.3903
+
+sepehr@sepehr-G56JK:~/Documents/Sohrab$ st --complete genetic_only_mutation 20
+N	min		q1		median		q3		max		sum		mean		stddev	stderr		variance
+1000	-66.4025	-37.5663	-33.6605	-30.6193	-22.7444	-34525.5	-34.5255	5.49202	0.173673	30.1622
+
+sepehr@sepehr-G56JK:~/Documents/Sohrab$ st --complete genetic_only_mutation_30
+N	min		q1		median		q3		max		sum		mean		stddev	stderr		variance
+1000	-54.9427	-30.8092	-26.9094	-23.9999	-16.7463	-27825.3	-27.8253	5.46355	0.172773	29.8504
+
+sepehr@sepehr-G56JK:~/Documents/Sohrab$ st --complete genetic_only_mutation_50
+N	min		q1		median		q3		max		sum		mean		stddev	stderr		variance
+1000	-44.3092	-21.0235	-17.5158	-14.5436	-8.53903	-18291.7	-18.2917	5.07177	0.160383	25.7229
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+sepehr@sepehr-G56JK:~/Documents/Sohrab$ st --complete genetic_mutate_all_5 
+N	min		q1		median		q3		max		sum		mean		stddev	stderr		variance
+1000	-40.1602	-11.0154	-7.63417	-5.54514	-1.67		-8735.84	-8.73584	4.48715	0.141896	20.1346
+
+sepehr@sepehr-G56JK:~/Documents/Sohrab$ st --complete genetic_mutate_all_10
+N	min		q1		median		q3		max		sum		mean		stddev	stderr		variance
+1000	-34.569		-11.5647	-7.97921	-5.84534	-1.82646	-9303.34	-9.30334	4.81479	0.152257	23.1822
+
+sepehr@sepehr-G56JK:~/Documents/Sohrab$ st --complete genetic_mutate_all_20
+N	min		q1		median		q3		max		sum		mean		stddev	stderr		variance
+1000	-35.9108	-11.0334	-8.07871	-6.03126	-2.29938	-8972.71	-8.97271	4.17227	0.131939	17.4078
+
+sepehr@sepehr-G56JK:~/Documents/Sohrab$ st --complete genetic_mutate_all_30
+N	min		q1		median		q3		max		sum		mean		stddev	stderr		variance
+1000	-28.7798	-10.8438	-8.07594	-6.05647	-1.9379		-8903.21	-8.90321	3.91885	0.123925	15.3574
+
+sepehr@sepehr-G56JK:~/Documents/Sohrab$ st --complete genetic_mutate_all_50
+N	min		q1		median		q3		max		sum		mean		stddev	stderr		variance
+1000	-43.4891	-10.3498	-7.81271	-5.94793	-2.47123	-8893.08	-8.89308	4.5815	0.14488		20.9901
+
