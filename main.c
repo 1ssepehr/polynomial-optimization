@@ -37,25 +37,29 @@ void mate( chromosome *p1, chromosome *p2, chromosome *c1, chromosome *c2 );
 
 /*** MAIN ***/
 int main( int argc, char* argv[] ) {
-    int i, j, p1, p2, c1, c2;
+
+    int i, j;
+    int p1, p2, c1, c2;
     int u_count = 0;
     chromosome sample[M_G];
     FILE *fin;
-    double* u;
+    double *u;
+    double tmp;
 
     /* Randomize with time */
     struct timespec spec;
     clock_gettime(CLOCK_REALTIME, &spec);
     srand(spec.tv_nsec);
 
-    /* Read the u_i values from the file (filename given in argv[1]) */
+    /* Count the u_i values from the file (filename via argv[1]) */
     fin = fopen( argv[1], "r" );
-    double tmp;
     while( fscanf( fin, "%lf", &tmp ) != EOF ) u_count++;
     fclose( fin );
+
+    /* Read the u_i values from the file (filename via argv[1]) */
     u = (double *) malloc( sizeof(double) * u_count );
     fin = fopen( argv[1], "r" );
-    for( i = 0; i < u_count; i++ )
+    for( i = 0; i < u_count; i++)
         fscanf( fin, "%lf", &u[i] );
 
     /* Initialize the M_G chromosomes with random values */
@@ -92,7 +96,6 @@ int main( int argc, char* argv[] ) {
 
     /* Ouput the best chromosome theta values */
     printf( "%lf\n", sample[0].evaluation );
-
     return 0;
 }
 
@@ -124,15 +127,15 @@ int comparator( const void *A, const void *B ) {
     double a, b;
     a = ((chromosome*) A) -> evaluation;
     b = ((chromosome*) B) -> evaluation;
-    return ( a > b ) ? 1 : -1; /* if A has higher results, it's worse, so it comes later => 1 (and -1 o.w.) */
+    /* if A has higher results, it's worse, so it comes later => 1 (and -1 o.w.) */
+    return ( a > b ) ? 1 : -1;
 }
 
 void mutate( chromosome *A ) {
     int i, j;
     for( i = 0; i <= N_DEGREE; i++ )
         for( j = 0; j < TOTAL_BITS; j++ )
-            if( rand() % 100 < MUTATION )
-                A -> theta[i] ^= ('\0' + 1) << j;
+            if( rand() % 100 < MUTATION ) A -> theta[i] ^= ('\0' + 1) << j;
 }
 
 void mate( chromosome *p1, chromosome *p2, chromosome *c1, chromosome *c2 ) {
@@ -141,11 +144,10 @@ void mate( chromosome *p1, chromosome *p2, chromosome *c1, chromosome *c2 ) {
     *c1 = *p1;
     *c2 = *p2;
     for( k = 0; k <= N_DEGREE; k++ ) {
-        if( rand() % 2 ) {
+        if( rand() % 2 == 1 ) {
             temp           = c1 -> theta[k];
             c1 -> theta[k] = c2 -> theta[k];
             c2 -> theta[k] = temp;
         }
     }
-    return;
 }
