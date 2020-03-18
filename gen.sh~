@@ -7,12 +7,12 @@ rm -f TEMP
 for i in $(seq 0 0.01 1)
 do
     rm -f TEMP
-    for j in {1..100}
+    for j in {1..1000}
     do
         ./genetic $i >> TEMP
     done
     printf "U = %.2f\tGenetic: %f\tBitwise: %f\n" $i $(st --median TEMP) $(./bitwise $i) >> compare_genetic_bitwise
-    printf "\nU = %.2f: done" $i
+    printf "%.2f done" $i
     rm -f TEMP
 done
-printf "\n"
+

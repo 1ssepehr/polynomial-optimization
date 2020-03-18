@@ -1,15 +1,18 @@
 CC = gcc
 CFLAGS = -Wall
-OBJECTS = main.o complex.o
 
-output: $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -lm -o output
+genetic bitwise: bitwise.o genetic.o complex.o
+	$(CC) $(CFLAGS) bitwise.o complex.o -lm -o bitwise
+	$(CC) $(CFLAGS) genetic.o complex.o -lm -o genetic
 
-main.o: main.c complex.h
-	$(CC) $(CFLAGS) -c main.c
+bitwise.o: bitwise.c bitwise.h complex.h
+	$(CC) $(CFLAGS) -c bitwise.c
+
+genetic.o: genetic.c complex.h
+	$(CC) $(CFLAGS) -c genetic.c
 
 complex.o: complex.c complex.h
 	$(CC) $(CFLAGS) -c complex.c
 
 clean:
-	rm -f output $(OBJECTS)
+	rm -f genetic bitwise genetic.o bitwise.o complex.o
