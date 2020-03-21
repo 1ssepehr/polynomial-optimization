@@ -42,7 +42,8 @@ int main( int argc, char* argv[] ) {
     int p1, p2, c1, c2;
     int u_count = 0;
     chromosome sample[M_G];
-    double u[1];
+    double *u, tmp;
+    FILE *fin;
 
     /* Randomize with time */
     struct timespec spec;
@@ -59,8 +60,8 @@ int main( int argc, char* argv[] ) {
 
     /* Read the u_i values from the file (filename via argv[1]) */
     u = (double *) malloc( sizeof(double) * u_count );
-    fin = fopen( argv[1], "r" );
-    for( i = 0; i < u_count; i++)
+    fin = fopen( "roots", "r" );
+    for( i = 0; i < u_count; i++ )
         fscanf( fin, "%lf", &u[i] );
 
     /* Initialize the M_G chromosomes with random values */
@@ -113,14 +114,14 @@ double calculate( chromosome *A, double u ) {
 }
 
 void evaluate( chromosome *A, double u[], int u_count ) {
-    double min = 10e7;
+    double max = -10e7;
     double p;
     int i;
     for( i = 0; i < u_count; i++ ) {
         p = calculate( A, u[i] );
-        if( min > p ) min = p;
+        if( max < p ) max = p;
     }
-    A -> evaluation = min;
+    A -> evaluation = max;
 }
 
 int comparator( const void *A, const void *B ) {
