@@ -10,7 +10,8 @@
 #define M_G      ( 700 )  /* Sample size population */
 #define N_REPEAT ( 25 )   /* # of generations to go */
 
-#define TOTAL_BITS ( 3 )  /* Total number of bits used for each coefficient */
+int TOTAL_BITS;          /* Total number of bits used for each coefficient */
+
 #define MUTATION ( 5 )   /* % rate of mutating (toggling) bits of child chromosomes */
 
 typedef struct {
@@ -48,19 +49,19 @@ int main( int argc, char* argv[] ) {
     clock_gettime(CLOCK_REALTIME, &spec);
     srand(spec.tv_nsec);
 
+    /* Read the total number of bits from argument 1 */
+    TOTAL_BITS = atoi( argv[1] );
+
     /* Count the u_i values from the file (filename via argv[1]) */
-    /* fin = fopen( argv[1], "r" ); */
-    /* while( fscanf( fin, "%lf", &tmp ) != EOF ) u_count++; */
-    /* fclose( fin ); */
+    fin = fopen( "roots", "r" );
+    while( fscanf( fin, "%lf", &tmp ) != EOF ) u_count++;
+    fclose( fin );
 
     /* Read the u_i values from the file (filename via argv[1]) */
-    /* u = (double *) malloc( sizeof(double) * u_count ); */
-    /* fin = fopen( argv[1], "r" ); */
-    /* for( i = 0; i < u_count; i++) */
-        /* fscanf( fin, "%lf", &u[i] ); */
-
-    u[0] = atof( argv[1] );
-    u_count = 1;
+    u = (double *) malloc( sizeof(double) * u_count );
+    fin = fopen( argv[1], "r" );
+    for( i = 0; i < u_count; i++)
+        fscanf( fin, "%lf", &u[i] );
 
     /* Initialize the M_G chromosomes with random values */
     for( i = 0; i < M_G; i++ ) {
