@@ -11,19 +11,18 @@ int main( int argc, char* argv[] ) {
     int u_count = 0;
     double u[1];
 
-    /* Count the u_i values from the file (filename via argv[1]) */
-    /* fin = fopen( "roots", "r" ); */
-    /* while( fscanf( fin, "%lf", &tmp ) != EOF ) u_count++; */
-    /* fclose( fin ); */
-    /* Read the u_i values */
-    /* u = (double *) malloc( sizeof(double) * u_count ); */
-    /* fin = fopen( "roots", "r" ); */
-    /* for( i = 0; i < u_count; i++) */
-        /* fscanf( fin, "%lf", &u[i] ); */
+    /* Total number of bits (precision) for each theta from agrv[1] */
+    TOTAL_BITS = atoi( argv[1] ) ;
 
-    /* Single root taken from argv[1] as a float */
-    u[0] = atof( argv[1] );
-    u_count = 1;
+    /* Count the u_i values from the file (filename via argv[2]) */
+    fin = fopen( "roots", "r" );
+    while( fscanf( fin, "%lf", &tmp ) != EOF ) u_count++;
+    fclose( fin );
+    /* Read the u_i values */
+    u = (double *) malloc( sizeof(double) * u_count );
+    fin = fopen( "roots", "r" );
+    for( i = 0; i < u_count; i++)
+        fscanf( fin, "%lf", &u[i] );
 
     chromosome template;
     for( i = 0; i <= N_DEGREE; i++ ) template.theta[i] = 0;

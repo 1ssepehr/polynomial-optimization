@@ -2,13 +2,13 @@
 #define _BITWISE_H
 
 #define N_DEGREE ( 15 )   /* Degree of the polynomial */
-#define TOTAL_BITS ( 3 )  /* Total number of bits used for each coefficient */
+
+int TOTAL_BITS = 0;       /* Total number of bits used for each coefficient */
 
 typedef struct {
     unsigned char theta[N_DEGREE + 1]; /* To cover theta_0 to theta_N, inclusive */
     double evaluation; /* The largest value of the polynomial when plugging all u_i */
 } chromosome;
-
 
 /* Calculates the polynomial in a given u  */
 double calculate( chromosome *A, double u, int flag );
