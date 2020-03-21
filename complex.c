@@ -24,7 +24,7 @@ complex Multiply_Complex( complex A, complex B ){
 
 complex Divide_Complex( complex A, complex B ){
     complex C;
-    double denom;    
+    double denom;
     denom = ( B.real * B.real ) + ( B.im * B.im );
     C.real = (( A.real * B.real ) + ( A.im   * B.im )) / denom;
     C.im   = (( A.im   * B.real ) - ( A.real * B.im )) / denom;
