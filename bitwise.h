@@ -4,7 +4,7 @@
 #define N_DEGREE ( 15 )   /* Degree of the polynomial */
 
 int TOTAL_BITS = 0;       /* Total number of bits used for each coefficient */
-
+int MAX_TOTAL_BITS = 0;   /* Total number of regions around the unit circle */
 typedef struct {
     unsigned char theta[N_DEGREE + 1]; /* To cover theta_0 to theta_N, inclusive */
     double evaluation; /* The largest value of the polynomial when plugging all u_i */

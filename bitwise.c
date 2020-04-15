@@ -5,14 +5,24 @@
 #include "complex.h"
 #include "bitwise.h"
 
+void print_chromosome( chromosome A ) {
+    int i;
+    printf( "[" );
+    for( i = 0; i < N_DEGREE; i++ )
+        printf( "%d, ", A.theta[i] );
+    printf( "%d]\n", A.theta[N_DEGREE] );
+}
+
 int main( int argc, char* argv[] ) {
 
     int i;
     int u_count = 0;
-    double u[1];
+    double *u, tmp;
+    FILE *fin;
 
     /* Total number of bits (precision) for each theta from agrv[1] */
-    TOTAL_BITS = atoi( argv[1] ) ;
+    TOTAL_BITS = atoi( argv[1] );
+    MAX_TOTAL_BITS = atoi( argv[2] );
 
     /* Count the u_i values from the file (filename via argv[2]) */
     fin = fopen( "roots", "r" );
@@ -27,10 +37,13 @@ int main( int argc, char* argv[] ) {
     chromosome template;
     for( i = 0; i <= N_DEGREE; i++ ) template.theta[i] = 0;
 
-    template = optimize_bitwise( 0, template, u, u_count );
-    template = optimize_bitwise( 1, template, u, u_count );
-    template = optimize_bitwise( 2, template, u, u_count );
-    printf( "%lf\n", template.evaluation );
+    for( i = 0; i < TOTAL_BITS; i++ ) {
+        template = optimize_bitwise( i, template, u, u_count );
+        printf( "%lf\n", template.evaluation );
+    }
+
+    print_chromosome( template );
+
     return 0;
 }
 
@@ -96,22 +109,22 @@ double calculate( chromosome *A, double u, int flag ) {
             region += 0.5 * power_of_two;
         }
 
-        term.real = cos( region * (2*M_PI / 64) + k * M_PI * u );
-        term.im   = sin( region * (2*M_PI / 64) + k * M_PI * u );
+        term.real = cos( region * (2*M_PI / (1 << MAX_TOTAL_BITS)) + k * M_PI * u );
+        term.im   = sin( region * (2*M_PI / (1 << MAX_TOTAL_BITS)) + k * M_PI * u );
         ans = Add_Complex( ans, term );
     }
     return 20 * log10( Norm_Complex( ans ) );
 }
 
 void evaluate( chromosome *A, double u[], int u_count, int flag ) {
-    double min = 10e7;
+    double max = -10e7;
     double p;
     int i;
     for( i = 0; i < u_count; i++ ) {
         p = calculate( A, u[i], flag );
-        if( min > p ) min = p;
+        if( max < p ) max = p;
     }
-    A -> evaluation = min;
+    A -> evaluation = max;
 }
 
 int comparator( const void *A, const void *B ) {

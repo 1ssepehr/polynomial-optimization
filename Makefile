@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -Wall -g
 
 genetic bitwise: bitwise.o genetic.o complex.o
 	$(CC) $(CFLAGS) bitwise.o complex.o -lm -o bitwise

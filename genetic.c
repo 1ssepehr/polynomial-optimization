@@ -7,8 +7,8 @@
 #define new_theta() ( rand() % 8 )
 
 #define N_DEGREE ( 15 )   /* Degree of the polynomial */
-#define M_G      ( 700 )  /* Sample size population */
-#define N_REPEAT ( 25 )   /* # of generations to go */
+#define M_G      ( 1500 )  /* Sample size population */
+#define N_REPEAT ( 1000 )   /* # of generations to go */
 
 int TOTAL_BITS;          /* Total number of bits used for each coefficient */
 
@@ -18,6 +18,14 @@ typedef struct {
     unsigned char theta[N_DEGREE + 1]; /* To cover theta_0 to theta_N, inclusive */
     double evaluation; /* The largest value of the polynomial when plugging all u_i */
 } chromosome;
+
+void print_chromosome( chromosome A ) {
+    int i;
+    printf( "[" );
+    for( i = 0; i < N_DEGREE; i++ )
+        printf( "%d, ", A.theta[i] );
+    printf( "%d]\n", A.theta[N_DEGREE] );
+}
 
 /* Calculates the polynomial in a given u  */
 double calculate( chromosome *A, double u );
@@ -97,6 +105,7 @@ int main( int argc, char* argv[] ) {
     }
 
     /* Ouput the best chromosome theta values */
+    print_chromosome( sample[0] );
     printf( "%lf\n", sample[0].evaluation );
     return 0;
 }
