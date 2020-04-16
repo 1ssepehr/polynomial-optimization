@@ -1,17 +1,32 @@
 #!/bin/bash
 
 make
-rm -f compare_genetic_bitwise
+rm -f genetic_output_evaluation
+rm -f genetic_output_generation
+rm results_4_15_20
 
-for i in $(seq 0 0.01 1)
+for delta in $(seq 0 0.00390625 0.0625)
 do
-    rm -f TEMP
-    for j in {1..100}
+    printf "Delta=%.0f/256:\n" $(echo "$delta * 256" | bc) >> results_4_15_20
+    
+    for roots in 0.125 0.25 0.375 0.5 0.625 0.75 0.875 -0.875 -0.75 -0.625 -0.5 -0.375 -0.25 -0.125
     do
-        ./genetic $i >> TEMP
+        printf "___\n" >> results_4_15_20
+        printf "Root=%.3f:\n" $roots >> results_4_15_20
+        echo $(echo "$roots+$delta" | bc) > roots
+        
+        for i in {1..250}
+        do
+            ./genetic 3 40
+        done
+            
+        printf "Evaluation " >> results_4_15_20
+        st --min --max --median --mean --stddev --format="%.2f" --no-header --delimiter=", " genetic_output_evaluation >> results_4_15_20
+        printf "Generation " >> results_4_15_20
+        st --min --max --median --mean --stddev --format="%.2f" --no-header --delimiter=", " genetic_output_generation >> results_4_15_20
+
+        rm -f genetic_output_evaluation
+        rm -f genetic_output_generation
     done
-    printf "U = %.2f\tGenetic: %f\tBitwise: %f\n" $i $(st --median TEMP) $(./bitwise $i) >> compare_genetic_bitwise
-    printf "\nU = %.2f: done" $i
 done
-rm -f TEMP
 printf "\n"
