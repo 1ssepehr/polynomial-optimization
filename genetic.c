@@ -7,8 +7,8 @@
 #define new_theta() ( rand() % 8 )
 
 #define N_DEGREE ( 15 )   /* Degree of the polynomial */
-#define M_G      ( 1500 )  /* Sample size population */
-#define N_REPEAT ( 1000 )   /* # of generations to go */
+#define M_G      ( 64 )  /* Sample size population */
+#define N_REPEAT ( 100 )   /* # of generations to go */
 
 int TOTAL_BITS;          /* Total number of bits used for each coefficient */
 
@@ -52,6 +52,12 @@ int main( int argc, char* argv[] ) {
     chromosome sample[M_G];
     double *u, tmp;
     FILE *fin;
+    FILE *fout_evaluation ;
+    FILE *fout_generation ;
+    int tolerance ;
+
+    fout_evaluation = fopen( "genetic_output_evaluation", "a" ) ;
+    fout_generation = fopen( "genetic_output_generation", "a" ) ;
 
     /* Randomize with time */
     struct timespec spec;
@@ -60,6 +66,7 @@ int main( int argc, char* argv[] ) {
 
     /* Read the total number of bits from argument 1 */
     TOTAL_BITS = atoi( argv[1] );
+    tolerance = atoi( argv[2] ) ;
 
     /* Count the u_i values from the file (filename via argv[1]) */
     fin = fopen( "roots", "r" );
@@ -74,10 +81,11 @@ int main( int argc, char* argv[] ) {
 
     /* Initialize the M_G chromosomes with random values */
     for( i = 0; i < M_G; i++ ) {
-        for( j = 0; j <= N_DEGREE; j++ )
-            sample[i].theta[j] = new_theta(); /* Fill the thetas */
+        for( j = 0; j <= N_DEGREE; j++ ) sample[i].theta[j] = new_theta(); /* Fill the thetas */
         evaluate( &sample[i], u, u_count ); /* Evaluate after filling */
     }
+    for( j = 0; j <= N_DEGREE; j++ ) sample[M_G - 1].theta[j] = 0; /* The "all zero" chromosome */
+    evaluate( &sample[M_G - 1], u, u_count ) ;
 
     /* Until convergence, for N_REPEAT times: */
     for( i = 0; i < N_REPEAT; i++) {
@@ -102,11 +110,12 @@ int main( int argc, char* argv[] ) {
 
         /* Rank the M_G chromosomes (using quicksort) */
         qsort( (void*) sample, M_G, sizeof( chromosome ), comparator );
+        if( sample[0].evaluation < -tolerance ) break ;
     }
 
     /* Ouput the best chromosome theta values */
-    print_chromosome( sample[0] );
-    printf( "%lf\n", sample[0].evaluation );
+    fprintf( fout_evaluation, "%lf\n", sample[0].evaluation );
+    fprintf( fout_generation, "%d\n", i ) ;
     return 0;
 }
 
