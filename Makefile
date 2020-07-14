@@ -8,7 +8,7 @@ genetic bitwise: bitwise.o genetic.o complex.o
 bitwise.o: bitwise.c bitwise.h complex.h
 	$(CC) $(CFLAGS) -c bitwise.c
 
-genetic.o: genetic.c complex.h
+genetic.o: genetic.c genetic.h complex.h
 	$(CC) $(CFLAGS) -c genetic.c
 
 complex.o: complex.c complex.h
