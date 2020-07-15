@@ -1,32 +1,46 @@
 #!/bin/bash
 
+# variables
+OUTPUT=./output.csv
+REPETITION=100
+
+# make and error check
 make
-rm -f genetic_output_evaluation
-rm -f genetic_output_generation
-rm results_4_15_20
+if [ $? -eq 0 ]
+then
+    printf "Makefile successful.\n"
+else
+    exit 1
+fi
 
-for delta in $(seq 0 0.00390625 0.0625)
+# check for file existing
+if [ -a $OUTPUT ]
+then
+    printf "$OUTPUT exists. Overwrite? y/n\n"
+    read ANSWER
+    case $ANSWER in
+        [yY]) rm -f $OUTPUT
+        ;;
+        [nN]) printf "Exiting script.\n"; exit 1
+        ;;
+    esac
+fi
+
+# the header for .csv file
+printf "bitRes, root, min, max, median, mean, stddev\n" >> $OUTPUT
+
+# execute code
+for targetBit in 2 3 4 5 6 7 8 9 10
 do
-    printf "Delta=%.0f/256:\n" $(echo "$delta * 256" | bc) >> results_4_15_20
-    
-    for roots in 0.125 0.25 0.375 0.5 0.625 0.75 0.875 -0.875 -0.75 -0.625 -0.5 -0.375 -0.25 -0.125
+    printf "\n" >> $OUTPUT
+    for roots in 0.3 0.35 0.4 0.45 0.55
     do
-        printf "___\n" >> results_4_15_20
-        printf "Root=%.3f:\n" $roots >> results_4_15_20
-        echo $(echo "$roots+$delta" | bc) > roots
-        
-        for i in {1..250}
+        printf "%d, %.2f, " $targetBit $roots >> $OUTPUT        
+        for ((i=0; i<$REPETITION; i++))
         do
-            ./genetic 3 40
-        done
-            
-        printf "Evaluation " >> results_4_15_20
-        st --min --max --median --mean --stddev --format="%.2f" --no-header --delimiter=", " genetic_output_evaluation >> results_4_15_20
-        printf "Generation " >> results_4_15_20
-        st --min --max --median --mean --stddev --format="%.2f" --no-header --delimiter=", " genetic_output_generation >> results_4_15_20
-
-        rm -f genetic_output_evaluation
-        rm -f genetic_output_generation
+            printf "$roots" | ./genetic 10 ${targetBit} 
+        done | st --min --max --median --mean --stddev --format="%.2f" --no-header --delimiter=", " >> $OUTPUT            
     done
 done
-printf "\n"
+
+make clean
